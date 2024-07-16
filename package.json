@@ -7,7 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "start": "node build/server.js",
     "build": "tsup src --out-dir build",
-    "test": "vitest run --dir src/services"
+    "test": "vitest run --dir src/"
   },
   "devDependencies": {
     "@rocketseat/eslint-config": "^2.2.2",
@@ -32,6 +32,7 @@
     "@fastify/jwt": "^8.0.1",
     "@prisma/client": "^5.16.2",
     "@types/lodash": "^4.17.6",
+    "axios": "1.7.2",
     "bcryptjs": "^2.4.3",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",

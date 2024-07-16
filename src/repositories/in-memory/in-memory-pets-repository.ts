@@ -5,7 +5,7 @@ import type {
 } from '../pets-repository.types'
 import { randomUUID } from 'node:crypto'
 
-export class InMemoryUsersRepository implements IPetsRepository {
+export class InMemoryPetsRepository implements IPetsRepository {
   public itens: Pet[] = []
 
   async create({
