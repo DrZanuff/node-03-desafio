@@ -18,7 +18,7 @@ const cepResponse = {
   unidade: '',
 }
 
-describe('Register Services', () => {
+describe('Register Use Case', () => {
   beforeEach(() => {
     inMemoryOrgs = new InMemoryOrgsRepository()
     registerOrg = new RegisterOrgUseCase(inMemoryOrgs)
