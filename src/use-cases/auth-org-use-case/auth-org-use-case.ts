@@ -1,7 +1,7 @@
 import { ERROR_LIST } from '@/constants/erros'
 import { IOrgsRepository } from '@/repositories/orgs-repository.types'
 import { Org } from '@prisma/client'
-import { compare } from 'bcryptjs'
+import bcryptjs from 'bcryptjs'
 
 type AuthUseCaseRequest = {
   email: string
@@ -25,7 +25,10 @@ export class AuthOrgUseCase {
       throw new Error(ERROR_LIST.AUTH_ORG.INVALID_CREDENTIAL)
     }
 
-    const doesPasswordMatches = await compare(password, org.password_hash)
+    const doesPasswordMatches = await bcryptjs.compare(
+      password,
+      org.password_hash
+    )
 
     if (!doesPasswordMatches) {
       throw new Error(ERROR_LIST.AUTH_ORG.INVALID_CREDENTIAL)

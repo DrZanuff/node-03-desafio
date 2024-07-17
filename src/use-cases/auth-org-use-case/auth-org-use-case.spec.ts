@@ -61,79 +61,99 @@ describe('Auth Use Case', () => {
     expect(org.name).toBe(name)
   })
 
-  // it('should not be able to authenticate with wrong email', async () => {
-  //   const email = 'jhon.doe@gmail.com'
-  //   const name = 'Jhon Doe'
-  //   const password = '101010'
-  //   const password_hash = await hash(password, 6)
+  it('should not be able to authenticate with wrong email', async () => {
+    const email = 'jhon.doe@gmail.com'
+    const name = 'Jhon Doe'
+    const password = '101010'
+    const password_hash = await hash(password, 6)
+    const address = 'Doe Town, street 2'
+    const cep = 71720900
+    const whatsapp = '(61) 99020-2020'
+    const city = 'Doe Town'
+    const uf = 'DT'
 
-  //   usersRespository.create({
-  //     email,
-  //     name,
-  //     password_hash,
-  //   })
+    orgsRespository.create({
+      email,
+      name,
+      password_hash,
+      address,
+      cep,
+      whatsapp,
+      city,
+      uf,
+    })
 
-  //   let messageError = ''
+    let messageError = ''
 
-  //   try {
-  //     await authService.execute({
-  //       email: 'jhon1.doe@gmail.com',
-  //       password,
-  //     })
-  //   } catch (err) {
-  //     messageError = String(err)
-  //   }
+    try {
+      await authOrgUseCase.execute({
+        email: 'jhon1.doe@gmail.com',
+        password,
+      })
+    } catch (err) {
+      messageError = String(err)
+    }
 
-  //   expect(messageError.includes(ERROR_LIST.AUTH_USER.INVALID_CREDENTIAL)).toBe(
-  //     true
-  //   )
-  // })
+    expect(messageError.includes(ERROR_LIST.AUTH_ORG.INVALID_CREDENTIAL)).toBe(
+      true
+    )
+  })
 
-  // it('should not be able to authenticate with wrong password', async () => {
-  //   const email = 'jhon.doe@gmail.com'
-  //   const name = 'Jhon Doe'
-  //   const password = '101010'
-  //   const password_hash = await hash(password, 6)
+  it('should not be able to authenticate with wrong password', async () => {
+    const email = 'jhon.doe@gmail.com'
+    const name = 'Jhon Doe'
+    const password = '101010'
+    const password_hash = await hash(password, 6)
+    const address = 'Doe Town, street 2'
+    const cep = 71720900
+    const whatsapp = '(61) 99020-2020'
+    const city = 'Doe Town'
+    const uf = 'DT'
 
-  //   usersRespository.create({
-  //     email,
-  //     name,
-  //     password_hash,
-  //   })
+    orgsRespository.create({
+      email,
+      name,
+      password_hash,
+      address,
+      cep,
+      whatsapp,
+      city,
+      uf,
+    })
 
-  //   let messageError = ''
+    let messageError = ''
 
-  //   try {
-  //     await authService.execute({
-  //       email,
-  //       password: '123456',
-  //     })
-  //   } catch (err) {
-  //     messageError = String(err)
-  //   }
+    try {
+      await authOrgUseCase.execute({
+        email,
+        password: '123456',
+      })
+    } catch (err) {
+      messageError = String(err)
+    }
 
-  //   expect(messageError.includes(ERROR_LIST.AUTH_USER.INVALID_CREDENTIAL)).toBe(
-  //     true
-  //   )
-  // })
+    expect(messageError.includes(ERROR_LIST.AUTH_ORG.INVALID_CREDENTIAL)).toBe(
+      true
+    )
+  })
 
-  // it('should not be able to authenticate with non existent user', async () => {
-  //   const email = 'jhon.doe@gmail.com'
-  //   const password = '101010'
+  it('should not be able to authenticate with non existent org', async () => {
+    const email = 'jhon.doe@gmail.com'
+    const password = '101010'
 
-  //   let messageError = ''
+    let messageError = ''
 
-  //   try {
-  //     await authService.execute({
-  //       email,
-  //       password,
-  //     })
-  //   } catch (err) {
-  //     messageError = String(err)
-  //   }
+    try {
+      await authOrgUseCase.execute({
+        email,
+        password,
+      })
+    } catch (err) {
+      messageError = String(err)
+    }
 
-  //   expect(messageError.includes(ERROR_LIST.AUTH_USER.INVALID_CREDENTIAL)).toBe(
-  //     true
-  //   )
-  // })
+    expect(messageError.includes(ERROR_LIST.AUTH_ORG.INVALID_CREDENTIAL)).toBe(
+      true
+    )
+  })
 })
