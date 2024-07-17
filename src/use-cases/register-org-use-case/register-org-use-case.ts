@@ -1,6 +1,6 @@
 import { ERROR_LIST } from '@/constants/erros'
 import { IOrgsRepository } from '@/repositories/orgs-repository.types'
-import { hash } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import { getCep } from '@/use-cases/services/get-cep'
 
 type RegisterOrgProps = {
@@ -23,7 +23,7 @@ export class RegisterOrgUseCase {
     whatsapp,
     cep,
   }: RegisterOrgProps) {
-    const password_hash = await hash(password, 6)
+    const password_hash = await bcrypt.hash(password, 6)
 
     const orgWithSameEmail = await this.orgsRepository.findByEmail({
       email,
