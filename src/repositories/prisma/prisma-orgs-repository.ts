@@ -48,4 +48,14 @@ export class PrismaOrgsRepository implements IOrgsRepository {
 
     return orgWithSameEmail
   }
+
+  async listManyOrgsByUF({ uf }: { uf: string }) {
+    const orgs = await prisma.org.findMany({
+      where: {
+        uf,
+      },
+    })
+
+    return orgs
+  }
 }

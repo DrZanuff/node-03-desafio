@@ -46,4 +46,18 @@ export class InMemoryPetsRepository implements IPetsRepository {
 
     return pet || null
   }
+
+  async searchManyByOrgIds({
+    orgIds,
+    page,
+  }: {
+    orgIds: string[]
+    page: number
+  }): Promise<Pet[]> {
+    const pets = this.itens
+      .filter((item) => orgIds.includes(item.org_id))
+      .splice((page - 1) * 20, page * 20)
+
+    return pets
+  }
 }

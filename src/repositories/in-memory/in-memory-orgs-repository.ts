@@ -48,4 +48,10 @@ export class InMemoryOrgsRepository implements IOrgsRepository {
 
     return org || null
   }
+
+  async listManyOrgsByUF({ uf }: { uf: string }): Promise<Org[]> {
+    const orgs = this.itens.filter((org) => org.uf === uf)
+
+    return orgs
+  }
 }

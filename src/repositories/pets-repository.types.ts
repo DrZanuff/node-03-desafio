@@ -9,4 +9,11 @@ export interface ICreatePetPayload extends TCreatePetPayload {
 export interface IPetsRepository {
   create(data: ICreatePetPayload): Promise<Pet>
   findById(data: { petId: string }): Promise<Pet | null>
+  searchManyByOrgIds({
+    orgIds,
+    page,
+  }: {
+    orgIds: string[]
+    page: number
+  }): Promise<Pet[]>
 }
