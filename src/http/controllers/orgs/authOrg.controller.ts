@@ -42,6 +42,7 @@ export async function authOrgController(
       .status(200)
       .send({
         token,
+        org_id: org.id,
       })
   } catch (err) {
     const errorMessage = get(err, 'message')

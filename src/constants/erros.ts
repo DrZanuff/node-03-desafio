@@ -7,5 +7,8 @@ export const ERROR_LIST = {
     INVALID_CREDENTIAL: 'Invalid credentials.',
     INVALID_USER: 'Invalid org.',
   },
+  REGISTER_PET: {
+    INVALID_ORG: 'Org not found...',
+  },
   UNKNOWN_ERROR: 'Something went wrong...',
 }
