@@ -3,15 +3,15 @@ import { IPetsRepository } from '@/repositories/pets-repository.types'
 import { IOrgsRepository } from '@/repositories/orgs-repository.types'
 import { Pet, $Enums } from '@prisma/client'
 
-type PetField = 'age' | 'size' | 'energy' | 'dependency' | 'environment'
-type PetParam =
+export type PetField = 'age' | 'size' | 'energy' | 'dependency' | 'environment'
+export type PetParam =
   | $Enums.PetAge
   | $Enums.PetSize
   | $Enums.PetEnergy
   | $Enums.PetDependency
   | $Enums.PetEnvironment
 
-type Query = {
+export type Query = {
   field: PetField
   param: PetParam
 }
