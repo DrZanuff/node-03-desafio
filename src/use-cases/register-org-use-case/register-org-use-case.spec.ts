@@ -109,6 +109,10 @@ describe('Register Use Case', () => {
   it('should be able to register', async () => {
     const password = '101010'
 
+    const mockedGetCep = vi
+      .spyOn(cepService, 'getCep')
+      .mockResolvedValue(cepResponse)
+
     const { org } = await registerOrg.execute({
       email: 'mypet@gmail.com',
       name: 'My Pet',
@@ -124,5 +128,6 @@ describe('Register Use Case', () => {
     // expect(user.id).toBe(expect.any(String))
     const isValidUUID = UUID_REGEX.test(org.id)
     expect(isValidUUID).toBe(true)
+    mockedGetCep.mockRestore()
   })
 })

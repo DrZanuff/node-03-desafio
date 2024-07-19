@@ -1,80 +1,56 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { InMemoryOrgsRepository } from '@/repositories/in-memory/in-memory-orgs-repository'
 import { InMemoryPetsRepository } from '@/repositories/in-memory/in-memory-pets-repository'
 import { SearchPetUseCase } from './search-pet-by-trait-use-case'
-import bcrypt from 'bcryptjs'
-import * as cepService from '@/use-cases/services/get-cep'
 
 let petsRepository: InMemoryPetsRepository
 let orgsRepository: InMemoryOrgsRepository
 let sut: SearchPetUseCase
 
-const cepResponseDF = {
-  cep: '71720-570',
-  logradouro: 'Avenida Central Blocos 1124/1226',
-  bairro: 'Núcleo Bandeirante',
-  localidade: 'Brasília',
-  uf: 'DF',
-  complemento: '',
-  unidade: '',
-}
-
-const cepResponseAL = {
-  cep: '57010-002',
-  logradouro: 'Avenida Siqueira Campos',
-  bairro: 'Prado',
-  localidade: 'Maceió',
-  uf: 'AL',
-  complemento: 'até 944 - lado par',
-  unidade: '',
-}
-
-describe('Find gyms Services', () => {
+describe('Find pets Use Case', () => {
   beforeEach(async () => {
     petsRepository = new InMemoryPetsRepository()
     orgsRepository = new InMemoryOrgsRepository()
     sut = new SearchPetUseCase(petsRepository, orgsRepository)
-  })
 
-  it('should be able to search for pets', async () => {
-    const mockedGetCepDF = vi
-      .spyOn(cepService, 'getCep')
-      .mockResolvedValue(cepResponseDF)
-
-    const org1 = await orgsRepository.create({
+    orgsRepository.itens.push({
       email: 'mypet@gmail.com',
       name: 'My Pet',
-      password_hash: await bcrypt.hash('101010', 6),
+      password_hash:
+        '$2a$06$NGgD9KC8IClCzn1eRgnHv.16KzB4cnM0SGsQBPB1uDYL26ZoleBBi',
       address: 'Avenida Central',
-      whatsapp: '(61) 99876-5432',
       cep: 71720570,
+      city: 'Brasilia',
+      uf: 'DF',
+      whatsapp: '(61) 99876-5432',
+      id: 'org-01-id',
     })
 
-    const org2 = await orgsRepository.create({
+    orgsRepository.itens.push({
       email: 'mype2t@gmail.com',
       name: 'My Pet DF 2',
-      password_hash: await bcrypt.hash('101010', 6),
+      password_hash:
+        '$2a$06$GHBYODgK2kcD3jeStc0wJ.D1mhYWSNDm2ZfBzPhYbZJbdAplPWHCu',
       address: 'Avenida Central',
-      whatsapp: '(61) 99876-5432',
       cep: 71720560,
+      city: 'Brasilia',
+      uf: 'DF',
+      whatsapp: '(61) 99876-5432',
+      id: 'org-02-id',
     })
 
-    mockedGetCepDF.mockRestore()
-
-    const mockedGetCepAL = vi
-      .spyOn(cepService, 'getCep')
-      .mockResolvedValue(cepResponseAL)
-
-    const org3 = await orgsRepository.create({
+    orgsRepository.itens.push({
       email: 'mype3t@gmail.com',
       name: 'My Pet AL',
-      password_hash: await bcrypt.hash('101010', 6),
+      password_hash:
+        '$2a$06$4UQ0wp64ikcDEahIf7J6Ae7J56sicNaJHBdY13SewJomJpCJjpDGO',
       address: 'venida Siqueira Campos"',
-      whatsapp: '(61) 99876-5432',
       cep: 57010002,
+      city: 'Alagoas',
+      uf: 'AL',
+      whatsapp: '(61) 99876-5432',
+      id: 'org-03-id',
     })
-
-    mockedGetCepAL.mockRestore()
 
     await petsRepository.create({
       about: 'A Golden Retrivier',
@@ -90,7 +66,7 @@ describe('Find gyms Services', () => {
         'Animal castrado',
       ],
       size: 'GRANDE',
-      orgId: org1.id,
+      orgId: 'org-01-id',
     })
 
     await petsRepository.create({
@@ -103,7 +79,7 @@ describe('Find gyms Services', () => {
       photo: 'base64-photo',
       requirements: ['Precisa passear 2 vezes na semana'],
       size: 'PEQUENO',
-      orgId: org2.id,
+      orgId: 'org-02-id',
     })
 
     await petsRepository.create({
@@ -116,9 +92,11 @@ describe('Find gyms Services', () => {
       photo: 'base64-photo',
       requirements: [],
       size: 'MEDIO',
-      orgId: org3.id,
+      orgId: 'org-03-id',
     })
+  })
 
+  it('should be able to search for pets', async () => {
     const { pets } = await sut.execute({
       page: 1,
       uf: 'DF',
@@ -127,30 +105,52 @@ describe('Find gyms Services', () => {
 
     expect(pets).toHaveLength(2)
 
-    // expect(gyms).toHaveLength(1)
-    // expect(gyms).toEqual([expect.objectContaining({ title: 'JavaScript Gym' })])
+    expect(pets).toEqual([
+      expect.objectContaining({ name: 'Meg' }),
+      expect.objectContaining({ name: 'Lola' }),
+    ])
   })
 
-  // it('should be able to fetch paginated gym search', async () => {
-  //   for (let i = 1; i <= 22; i++) {
-  //     await gymsRepository.create({
-  //       latitude: new Decimal(-15.8533857),
-  //       longitude: new Decimal(-47.9597349),
-  //       phone: '99 9890-9900',
-  //       title: `JavaScript Gym ${i}`,
-  //       description: 'A JS GYM',
-  //     })
-  //   }
+  it('should be able to search for pets and filter it', async () => {
+    const { pets } = await sut.execute({
+      page: 1,
+      uf: 'DF',
+      query: [{ field: 'size', param: 'GRANDE' }],
+    })
 
-  //   const { gyms } = await sut.execute({
-  //     page: 2,
-  //     query: 'JavaScript',
-  //   })
+    expect(pets).toHaveLength(1)
 
-  //   expect(gyms).toHaveLength(2)
-  //   expect(gyms).toEqual([
-  //     expect.objectContaining({ title: 'JavaScript Gym 21' }),
-  //     expect.objectContaining({ title: 'JavaScript Gym 22' }),
-  //   ])
-  // })
+    expect(pets).toEqual([expect.objectContaining({ name: 'Meg' })])
+  })
+
+  it('should be able to fetch paginated pet search', async () => {
+    for (let i = 1; i <= 22; i++) {
+      await petsRepository.create({
+        about: 'Puppy dog',
+        age: 'FILHOTE',
+        dependency: 'MEDIO',
+        energy: 'TRES',
+        environment: 'LOCAIS_PEQUENOS',
+        name: `Dog ${i}`,
+        photo: 'base64-photo',
+        requirements: [],
+        size: 'PEQUENO',
+        orgId: 'org-01-id',
+      })
+    }
+
+    const { pets } = await sut.execute({
+      page: 2,
+      uf: 'DF',
+      query: [],
+    })
+
+    expect(pets).toHaveLength(4)
+    expect(pets).toEqual([
+      expect.objectContaining({ name: 'Dog 19' }),
+      expect.objectContaining({ name: 'Dog 20' }),
+      expect.objectContaining({ name: 'Dog 21' }),
+      expect.objectContaining({ name: 'Dog 22' }),
+    ])
+  })
 })

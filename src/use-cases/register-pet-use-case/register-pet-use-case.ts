@@ -42,8 +42,6 @@ export class RegisterPetUseCase {
   }: RegisterPetProps) {
     const org = await this.orgsRepository.findById({ orgId })
 
-    console.log('DBG:', { org, orgId })
-
     if (!org) {
       throw new Error(ERROR_LIST.REGISTER_PET.INVALID_ORG)
     }

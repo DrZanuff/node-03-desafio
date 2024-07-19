@@ -34,6 +34,7 @@ export class RegisterOrgUseCase {
     }
 
     const cepData = await getCep(cep)
+    console.log('DBG: RegisterOrgUseCase', { cep, cepData })
 
     if (!cepData) {
       throw new Error(ERROR_LIST.REGISTER_ORG.INVALID_CEP)
