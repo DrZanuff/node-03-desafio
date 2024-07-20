@@ -10,5 +10,8 @@ export const ERROR_LIST = {
   REGISTER_PET: {
     INVALID_ORG: 'Org not found...',
   },
+  FIND_PET: {
+    PET_NOT_FOUND: 'Pet not found...',
+  },
   UNKNOWN_ERROR: 'Something went wrong...',
 }

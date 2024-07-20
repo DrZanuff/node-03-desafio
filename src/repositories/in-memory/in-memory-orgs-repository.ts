@@ -16,8 +16,6 @@ export class InMemoryOrgsRepository implements IOrgsRepository {
     city,
     uf,
   }: Prisma.OrgCreateInput): Promise<Org> {
-    console.log('DBG: InMemoryOrgsRepository -> create', { uf, cep })
-
     const org: Org = {
       email,
       name,
@@ -53,8 +51,6 @@ export class InMemoryOrgsRepository implements IOrgsRepository {
 
   async listManyOrgsByUF({ uf }: { uf: string }): Promise<Org[]> {
     const orgs = this.itens.filter((org) => org.uf === uf)
-
-    console.log('DBG: listManyOrgsByUF', { uf, orgs, itens: this.itens })
 
     return orgs
   }

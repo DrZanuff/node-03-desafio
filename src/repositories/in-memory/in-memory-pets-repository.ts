@@ -54,8 +54,6 @@ export class InMemoryPetsRepository implements IPetsRepository {
     orgIds: string[]
     page: number
   }): Promise<Pet[]> {
-    console.log('DBG: searchManyByOrgIds', { itens: this.itens })
-
     const pets = this.itens
       .filter((item) => orgIds.includes(item.org_id))
       .splice((page - 1) * 20, page * 20)
