@@ -39,8 +39,6 @@ Para fazer uma nova migration no projeto
 
 Para realizar um teste especifico
 `npm run test --path/to/test.spec.ts`
-Examplo:
-`npm run test --back-end/src/helpers/seconds-to-time/seconds-to-time.spec.ts`
 
 ## Comon Errors
 
